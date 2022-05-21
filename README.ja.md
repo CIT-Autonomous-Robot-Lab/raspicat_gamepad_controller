@@ -10,9 +10,9 @@ Raspberry Pi Catを家庭用ゲームコントローラ (Logicool Wireless Gamep
 * Raspberry Pi
   * Raspberry Pi 4 model B
 * Ubuntu
-  * Ubuntu 18.04
+  * Ubuntu 20.04
 * ROS
-  * ROS Melodic Morenia
+  * ROS Noetic Ninjemys
 * ROS Package
   * Raspberry Pi Cat Controller - [rt-net/raspicat_ros](https://github.com/rt-net/raspicat_ros)
   * yocs_velocity_smoother - [yujinrobot/yujin_ocs](https://github.com/yujinrobot/yujin_ocs)
@@ -33,7 +33,8 @@ git clone https://github.com/rt-net/raspicat_gamepad_controller.git
 
 ```
 cd ~/catkin_ws
-rosdep install -r -y --from-paths src
+rosdep update
+rosdep install -r -y --from-paths --ignore-src ./.
 ```
 
 * 以下のコマンドでパッケージをビルドします。
@@ -46,27 +47,30 @@ source ~/catkin_ws/devel/setup.bash
 
 ## 使用方法
 
-以下のコマンドで`raspicat`の`raspicat.launch`と同時に`joy`ノードを起動します。
+以下のコマンドをraspicat側で実行します。以下のコマンドを自分のpc側で実行し`joy`ノードを起動します。
 ```
-$ roslaunch raspicat_gamepad_controller run_with_base_nodes.launch
+$ roslaunch raspaicat raspicat.launch
+```
+以下のコマンドを自分のpc側で実行し`joy`ノードを起動します。
+```
+$ roslaunch raspicat_gamepad_controller logicool_cmd_vel.launch
 ```
 
 ジョイスティックが`/dev/input/js0`以外のデバイスで認識されている（例えば`/dev/input/js1`）の場合、
 以下のようにして起動するデバイスを指定できます。
 ```
-$ roslaunch raspicat_gamepad_controller run_with_base_nodes.launch dev:=/dev/input/js1
+$ roslaunch raspicat_gamepad_controller logicool_cmd_vel.launch dev:=/dev/input/js1
 ```
 
 ## 操作方法
 
 まずはじめに、コントローラのモード切替スイッチを __DirectInput__ (D) modeに切り替え、MODEボタンの横のLEDが点灯していることを確認します。
 
-![](https://rt-net.github.io/images/raspberry-pi-cat/gamepad_front.jpg)
+Aボタン（緑）を押しながら十字ボタンを押すと上下で移動方向（前後）の指定、左右で旋回方向（左右）の指定ができます。 
 
-Xボタン（青）を押しながら十字ボタンを押すと上下で移動方向（前後）の指定、左右で旋回方向（左右）の指定ができます。  
-Xボタンではなく、Bボタン（赤）を押しながら十字ボタンを押すとなめらかに加減速します。
+Bボタン（赤）を押すと直進し、Yを押すと機体が停止します。
 
-![](https://rt-net.github.io/images/raspberry-pi-cat/gamepad_top.png)
+直進している時にでRスティックを左右に傾けると小さく曲がり、Lスティックを左右に傾けると大きく曲がります。
 
 ## ライセンス
 
